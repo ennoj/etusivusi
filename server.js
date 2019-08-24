@@ -1,6 +1,7 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const flash = require('connect-flash'); // Ei tarvii Reactin jälkeen
 const session = require('express-session'); // Ei tarvii Reactin jälkeen
 const passport = require('passport');
@@ -24,8 +25,12 @@ mongoose
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
+///// CORS /////
+app.use(cors());
+
 ///// BODYPARSER /////
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 ///// EXPRESS SESSION MIDDLEWARE - Ei tarvii Reactin jälkeen /////
 app.use(
@@ -52,8 +57,12 @@ app.use((req, res, next) => {
 });
 
 ///// ROUTET /////
+// Login and registeration
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
+
+// Links
+app.use('/links', require('./routes/links'));
 
 const PORT = process.env.PORT || 5000;
 
