@@ -5,6 +5,7 @@ const cors = require('cors');
 const flash = require('connect-flash'); // Ei tarvii Reactin jälkeen
 const session = require('express-session'); // Ei tarvii Reactin jälkeen
 const passport = require('passport');
+const path = require('path');
 
 // Pitääkö olla server?
 const app = express();
@@ -31,6 +32,7 @@ app.use(cors());
 ///// BODYPARSER /////
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, “client”)))
 
 ///// EXPRESS SESSION MIDDLEWARE - Ei tarvii Reactin jälkeen /////
 app.use(
