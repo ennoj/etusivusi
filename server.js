@@ -32,7 +32,8 @@ app.use(cors());
 ///// BODYPARSER /////
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, “client”)))
+// Tutorialin mukaan tämä tulee olla "path":n lisäksi:
+app.use(express.static(path.join(__dirname, “client/build”)))
 
 ///// EXPRESS SESSION MIDDLEWARE - Ei tarvii Reactin jälkeen /////
 app.use(
