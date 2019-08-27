@@ -64,7 +64,7 @@ const AddLink = () => {
         type='submit'
         variant='outlined'
       >
-        Lisää linkki
+        Lisää
       </Button>
     </form>
   );

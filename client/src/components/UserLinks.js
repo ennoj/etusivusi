@@ -1,17 +1,23 @@
-import React, { useState, useContext, Fragment } from 'react';
+import React, { useContext } from 'react';
 import UserLink from '../components/UserLink';
+
+import Container from '@material-ui/core/Container';
 
 import { LinkContext } from '../context/LinkContext';
 
 const UserLinks = () => {
-  const [links, setLinks] = useContext(LinkContext);
+  const [links] = useContext(LinkContext);
 
   return (
-    <Fragment>
-      {links.map(link => (
-        <UserLink name={link.name} url={link.url} />
-      ))}
-    </Fragment>
+    <Container maxWidth='sm'>
+      {links.map(link => {
+        if (link.category === 'user') {
+          return <UserLink name={link.name} url={link.url} key={link.name} />;
+        } else {
+          return null;
+        }
+      })}
+    </Container>
   );
 };
 

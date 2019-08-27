@@ -7,7 +7,8 @@ import Clock from '../components/Clock';
 const useStyles = makeStyles({
   root: {
     margin: '0px',
-    padding: '0px',
+    padding: '0',
+    margin: '0',
     height: '100vh',
     width: '100%',
     color: '#dedede',
