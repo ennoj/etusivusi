@@ -1,69 +1,42 @@
-const express = require('express');
-const expressLayouts = require('express-ejs-layouts');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const flash = require('connect-flash'); // Ei tarvii Reactin jälkeen
-const session = require('express-session'); // Ei tarvii Reactin jälkeen
-const passport = require('passport');
+const express = require('express')
+const mongoose = require('mongoose')
+const cors = require('cors')
+const passport = require('passport')
+require('dotenv/config')
 
-// Pitääkö olla server?
-const app = express();
+const app = express()
 
 ///// PASSPORT CONFIG /////
-require('./config/passport')(passport);
-
-///// MONGODB CONFIG /////
-const db = require('./config/keys').MongoURI;
+// require('./config/passport')(passport)
 
 ///// CONNECT TO MONGODB /////
-mongoose
-  .connect(db, { useNewUrlParser: true })
-  .then(() => console.log('***** MONGODB YHDISTETTY *****'))
-  .catch(err => console.log(err));
+mongoose.connect(process.env.DB_CONN, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }, () => {
+	console.log('***** MONGO DB CONNECTED *****')
+})
 
 // EJS - Poista kun React on käytössä (muista myös views)
-app.use(expressLayouts);
-app.set('view engine', 'ejs');
+//app.use(expressLayouts)
+//app.set('view engine', 'ejs')
 
 ///// CORS /////
-app.use(cors());
+app.use(cors())
 
 ///// BODYPARSER /////
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-///// EXPRESS SESSION MIDDLEWARE - Ei tarvii Reactin jälkeen /////
-app.use(
-  session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-  })
-);
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 ///// PASSPORT MIDDLEWARE /////
-app.use(passport.initialize());
-app.use(passport.session());
-
-///// CONNECT FLASH MIDDLEWARE - Ei tarvii Reactin jälkeen /////
-app.use(flash());
-
-///// GLABAL VARIABLES - Ei tarvii Reactin jälkeen /////
-app.use((req, res, next) => {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  next();
-});
+app.use(passport.initialize())
+app.use(passport.session())
 
 ///// ROUTET /////
 // Login and registeration
-app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
+app.use('/', require('./routes/index'))
+app.use('/users', require('./routes/users'))
 
 // Links
-app.use('/links', require('./routes/links'));
+app.use('/links', require('./routes/links'))
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5555
 
-app.listen(PORT, console.log(`***** SERVU KÄYNNISSÄ, PORT ${PORT} *****`));
+app.listen(PORT, console.log(`***** SERVERI KÄYNNISSÄ - PORTISSA ${PORT} *****`))
