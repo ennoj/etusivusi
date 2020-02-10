@@ -3,22 +3,14 @@ import UserLink from '../components/UserLink';
 
 import Container from '@material-ui/core/Container';
 
-import { LinkContext } from '../context/LinkContext';
-
-const UserLinks = () => {
-  const [links] = useContext(LinkContext);
-
-  return (
-    <Container maxWidth='sm'>
-      {links.map(link => {
-        if (link.category === 'user') {
-          return <UserLink name={link.name} url={link.url} key={link.name} />;
-        } else {
-          return null;
-        }
-      })}
-    </Container>
-  );
+const UserLinks = ({ allLinks, deleteLink }) => {
+	return (
+		<Container maxWidth="sm">
+			{allLinks.map((link) => (
+				<UserLink deleteLink={deleteLink} name={link.name} url={link._id} key={link.name} />
+			))}
+		</Container>
+	);
 };
 
 export default UserLinks;

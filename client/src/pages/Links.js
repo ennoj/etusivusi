@@ -1,11 +1,13 @@
-import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/styles'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-import DefaultLinks from '../components/DefaultLinks'
-import UserLinks from '../components/UserLinks'
-import AddLink from '../components/AddLink'
+import DefaultLinks from '../components/DefaultLinks';
+import UserLinks from '../components/UserLinks';
+import AddLink from '../components/AddLink';
+
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({
 	root: {
@@ -19,18 +21,64 @@ const useStyles = makeStyles({
 	title: {
 		marginTop: '1.7vh'
 	}
-})
+});
 
-const LinksPage = () => {
-	const classes = useStyles()
+const Links = () => {
+	const classes = useStyles();
+
+	const [ allLinks, setAllLinks ] = useState([]);
+
+	///// GET all links /////
+	const fetchLinks = async () => {
+		try {
+			const fetchedLinks = await axios.get('http://localhost:5555/links');
+			setAllLinks(fetchedLinks.data);
+			console.log('Links fetched from the database.');
+		} catch (err) {
+			console.error('Error while fetching links: ', err);
+		}
+	};
+	///// RUN (function above) on mount /////
+	useEffect(() => {
+		fetchLinks();
+	}, []);
+
+	///// ADD link /////
+	const handleAddLink = async (link) => {
+		try {
+			const newLink = {
+				name: link.name,
+				url: link.url
+			};
+			const linkToAdd = await axios.post('http://localhost:5555/links', newLink);
+			setAllLinks([ linkToAdd, ...allLinks ]);
+			console.log('Link added.');
+			fetchLinks();
+		} catch (err) {
+			console.error('Error while adding link: ', err);
+		}
+	};
+
+	///// DELETE link /////
+	const handleDeleteLink = async (linkToDelete) => {
+		try {
+			await axios.delete(`http://localhost:5555/links/${linkToDelete._id}`);
+			const linksToKeep = allLinks.filter((link) => !(link.id === linkToDelete._id));
+			setAllLinks(linksToKeep);
+			console.log('Link deleted.');
+			fetchLinks();
+		} catch (err) {
+			console.error('Error while deleting a single link: ', err);
+		}
+	};
 
 	return (
 		<Grid
 			className={classes.root}
 			container
-			direction='row'
-			justify='space-between'
-			alignItems='flex-start'
+			direction="row"
+			justify="space-between"
+			alignItems="flex-start"
 			spacing={2}
 		>
 			<Grid item s={9}>
@@ -38,14 +86,15 @@ const LinksPage = () => {
 			</Grid>
 
 			<Grid item s={3}>
-				<Typography className={classes.title} variant='h5'>
+				<Typography className={classes.title} variant="h4">
 					Omat Linkit
 				</Typography>
-				<AddLink />
-				<UserLinks />
+				<br />
+				<AddLink addLink={handleAddLink} />
+				<UserLinks allLinks={allLinks} deleteLink={handleDeleteLink} />
 			</Grid>
 		</Grid>
-	)
-}
+	);
+};
 
-export default LinksPage
+export default Links;
