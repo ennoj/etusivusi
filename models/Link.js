@@ -1,27 +1,35 @@
 const mongoose = require('mongoose');
 
 const LinkSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    unique: true,
-    required: true
-  },
+	// owner: {
+	//   type: Schema.Types.ObjectId,
+	//   ref: 'users'
+	// },
 
-  url: {
-    type: String,
-    required: true
-  },
+	name: {
+		type: String,
+		unique: true,
+		maxlength: 30,
+		required: true
+	},
 
-  category: {
-    type: String,
-    default: 'user',
-    required: true
-  },
+	url: {
+		type: String,
+		unique: true,
+		maxlength: 300,
+		required: true
+	},
 
-  date: {
-    type: Date,
-    default: Date.now()
-  }
+	category: {
+		type: String,
+		default: 'user',
+		required: true
+	},
+
+	date: {
+		type: Date,
+		default: Date.now()
+	}
 });
 
 const Link = mongoose.model('Link', LinkSchema);

@@ -1,5 +1,4 @@
-import React, { useState, useContext } from 'react';
-import { LinkContext } from '../context/LinkContext';
+import React, { useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -7,7 +6,12 @@ import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
 	button: {
-		margin: theme.spacing(1.3)
+		width: '100%',
+		margin: '20px 0'
+	},
+	field: {
+		width: '100%',
+		margin: '6px 0'
 	}
 }));
 
@@ -28,7 +32,7 @@ const AddLink = ({ addLink }) => {
 
 	const linkSubmit = (e) => {
 		e.preventDefault();
-		if (name.length < 3 || url.length < 3) {
+		if (name.length < 3 || url.length < 10) {
 			alert('Täytä vaaditut kentät');
 		} else {
 			addLink(newLink);
@@ -39,24 +43,24 @@ const AddLink = ({ addLink }) => {
 	return (
 		<form onSubmit={linkSubmit}>
 			<TextField
+				className={classes.field}
 				required
 				type="text"
 				name="name"
 				value={name}
 				onChange={onChange}
-				id="outlined-required"
-				label="Nimi"
+				label="Nimi (Maks. 30 merkkiä)"
 				margin="dense"
 				variant="outlined"
 			/>
 
 			<TextField
+				className={classes.field}
 				required
 				type="text"
 				name="url"
 				value={url}
 				onChange={onChange}
-				id="outlined-required"
 				label="Osoite (URL)"
 				margin="dense"
 				variant="outlined"

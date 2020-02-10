@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import UserLink from '../components/UserLink';
 
-import Container from '@material-ui/core/Container';
+import List from '@material-ui/core/List';
 
 const UserLinks = ({ allLinks, deleteLink }) => {
 	return (
-		<Container maxWidth="sm">
+		<List component="nav" aria-label="mailbox folders">
 			{allLinks.map((link) => (
-				<UserLink deleteLink={deleteLink} name={link.name} url={link._id} key={link.name} />
+				<UserLink link={link} deleteLink={deleteLink} name={link.name} url={link.url} key={link._id} />
 			))}
-		</Container>
+		</List>
 	);
 };
 

@@ -1,31 +1,39 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Chip from '@material-ui/core/Chip';
 import LinkIcon from '@material-ui/icons/Link';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-const useStyles = makeStyles((theme) => ({
-	chip: {
-		margin: '10px 5px'
-	}
-}));
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
 
-const UserLink = ({ name, url, deleteLink }) => {
-	const classes = useStyles();
-
+const UserLink = ({ link, name, url, deleteLink }) => {
 	return (
-		<Chip
-			className={classes.chip}
-			color="primary"
-			icon={<LinkIcon />}
-			label={name}
-			component="a"
-			href={url}
-			target="_blank"
-			onDelete={deleteLink}
-			clickable
-		/>
+		<a style={{ color: '#333', textDecoration: 'none' }} href={url} target="_blank">
+			<ListItem button>
+				<LinkIcon style={{ color: '#666', marginRight: '10px' }} />
+				<ListItemText primary={name} />
+				<DeleteIcon
+					style={{ color: 'darkred' }}
+					onClick={(e) => {
+						e.preventDefault();
+						deleteLink(link);
+					}}
+				/>
+			</ListItem>
+			<Divider />
+		</a>
 	);
 };
 
 export default UserLink;
+
+// <Chip
+// 	className={classes.chip}
+// 	color="primary"
+// 	icon={<LinkIcon />}
+// 	label={name}
+// 	target="_blank"
+// 	onDelete={() => deleteLink(link)}
+// 	onClick={(e) => handleClick(e)}
+// />;
