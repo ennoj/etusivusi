@@ -7,12 +7,16 @@ require('dotenv/config');
 const app = express();
 
 ///// PASSPORT CONFIG /////
-// require('./config/passport')(passport)
+require('./config/passport')(passport);
 
 ///// CONNECT TO MONGODB /////
-mongoose.connect(process.env.DB_CONN, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }, () => {
-	console.log('***** MONGO DB CONNECTED *****');
-});
+mongoose.connect(
+  process.env.DB_CONN,
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
+  () => {
+    console.log('***** MONGO DB CONNECTED *****');
+  }
+);
 
 ///// CORS /////
 app.use(cors());
@@ -35,4 +39,7 @@ app.use('/links', require('./routes/links'));
 
 const PORT = process.env.PORT || 5555;
 
-app.listen(PORT, console.log(`***** SERVERI KÄYNNISSÄ - PORTISSA ${PORT} *****`));
+app.listen(
+  PORT,
+  console.log(`***** SERVERI KÄYNNISSÄ - PORTISSA ${PORT} *****`)
+);
