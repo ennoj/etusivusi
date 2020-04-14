@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
 
-import Clock from '../components/Clock';
+import RegisterForm from '../components/RegisterForm';
 
 const useStyles = makeStyles({
   root: {
@@ -18,8 +18,24 @@ const useStyles = makeStyles({
   }
 });
 
-const Front = () => {
+const Register = () => {
   const classes = useStyles();
+
+  ///// REGISTER user /////
+  const handleAddUser = async user => {
+    try {
+      const newUser = {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        password2: user.password2
+      };
+      await axios.post('/users/register', newUser);
+      console.log('User added.');
+    } catch (err) {
+      console.error('Error while adding user: ', err);
+    }
+  };
 
   return (
     <div>
@@ -30,12 +46,10 @@ const Front = () => {
         justify='center'
         alignItems='center'
       >
-        <Clock />
-        <Link to='/register'>Register</Link>
-        <Link to='/login'>Login</Link>
+        <RegisterForm addUser={handleAddUser} />
       </Grid>
     </div>
   );
 };
 
-export default Front;
+export default Register;

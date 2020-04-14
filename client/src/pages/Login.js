@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
 
-import Clock from '../components/Clock';
+import LoginForm from '../components/LoginForm';
 
 const useStyles = makeStyles({
   root: {
@@ -18,8 +18,22 @@ const useStyles = makeStyles({
   }
 });
 
-const Front = () => {
+const Login = () => {
   const classes = useStyles();
+
+  ///// LOGIN user /////
+  const handleLoginUser = async user => {
+    try {
+      const loginFields = {
+        email: user.email,
+        password: user.password
+      };
+      const userToLogin = await axios.post('/users/register', loginFields);
+      console.log('User logged in.');
+    } catch (err) {
+      console.error('Error while loggin user in: ', err);
+    }
+  };
 
   return (
     <div>
@@ -30,12 +44,10 @@ const Front = () => {
         justify='center'
         alignItems='center'
       >
-        <Clock />
-        <Link to='/register'>Register</Link>
-        <Link to='/login'>Login</Link>
+        <LoginForm loginUser={handleLoginUser} />
       </Grid>
     </div>
   );
 };
 
-export default Front;
+export default Login;

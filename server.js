@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
+const session = require('express-session');
 require('dotenv/config');
 
 const app = express();
@@ -24,6 +25,15 @@ app.use(cors());
 ///// BODYPARSER /////
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+///// EXPRESS SESSION /////
+app.use(
+  session({
+    secret: 'todella sikret',
+    resave: true,
+    saveUninitialized: true
+  })
+);
 
 ///// PASSPORT MIDDLEWARE /////
 app.use(passport.initialize());

@@ -77,8 +77,7 @@ router.post('/register', (req, res) => {
             newUser
               .save()
               .then(user => {
-                // FIX: laita login kun valmista
-                res.redirect('/');
+                res.redirect('/users/login');
               })
               .catch(err => console.log(err));
           })
@@ -91,7 +90,7 @@ router.post('/register', (req, res) => {
 ///// LOGIN HANDLE /////
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
-    successRedirect: '/dashboard',
+    successRedirect: '/',
     failureRedirect: '/users/login'
   })(req, res, next);
 });

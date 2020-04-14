@@ -16,51 +16,33 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const emptyFields = {
-  name: '',
   email: '',
-  password: '',
-  password2: ''
+  password: ''
 };
 
-const Register = ({ addUser }) => {
+const Login = ({ loginUser }) => {
   const classes = useStyles();
-  const [newUser, setNewUser] = useState(emptyFields);
+  const [loginFields, setLoginFields] = useState(emptyFields);
 
-  const { name, email, password, password2 } = newUser;
+  const { email, password } = loginFields;
 
   const onChange = e => {
-    setNewUser({ ...newUser, [e.target.name]: e.target.value });
+    setLoginFields({ ...loginFields, [e.target.name]: e.target.value });
   };
 
-  const onRegister = e => {
+  const onLogin = e => {
     e.preventDefault();
-    if (
-      name.length < 3 ||
-      email.length < 3 ||
-      password.length < 6 ||
-      password2.length < 6
-    ) {
-      alert('Täytä vaaditut kentät');
+    if (email.length < 3 || password.length < 6) {
+      alert('Täytä vaaditut kentät oikein.');
     } else {
-      addUser(newUser);
-      setNewUser(emptyFields);
+      loginUser(loginFields);
+      setLoginFields(emptyFields);
     }
   };
 
   return (
     <>
-      <form onSubmit={onRegister} method='post'>
-        <TextField
-          className={classes.field}
-          required
-          type='text'
-          name='name'
-          value={name}
-          onChange={onChange}
-          label='Nimi'
-          margin='dense'
-          variant='outlined'
-        />
+      <form onSubmit={onLogin} method='post'>
         <TextField
           className={classes.field}
           required
@@ -83,17 +65,6 @@ const Register = ({ addUser }) => {
           margin='dense'
           variant='outlined'
         />
-        <TextField
-          className={classes.field}
-          required
-          type='password'
-          name='password2'
-          value={password2}
-          onChange={onChange}
-          label='Salasana uudestaan'
-          margin='dense'
-          variant='outlined'
-        />
 
         <Button
           className={classes.button}
@@ -101,11 +72,11 @@ const Register = ({ addUser }) => {
           type='submit'
           variant='outlined'
         >
-          Rekisteröidy
+          Kirjaudu
         </Button>
       </form>
     </>
   );
 };
 
-export default Register;
+export default Login;
